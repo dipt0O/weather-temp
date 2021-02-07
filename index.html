@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Temperature</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input type="text" id="input" class="form-control" placeholder="Enter a location for Weather ...">
+                <div class="input-group-append">
+                    <button type="button" id="button" class="btn btn-danger">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <h1 id="cityNameShow">Dhaka</h1>
+            <h3>Temp:  <span id="tempShow">38.06</span>&deg;C</h3>
+            <h3>Feels like: <span id="feels-like">38.06</span>&deg;C</h3>
+            <h1 id="weatherType" class="lead">Clouds</h1>
+        </div>
+    </div>
+    <script>
+        document.getElementById('button').addEventListener('click', function(){
+            const cityName = document.getElementById('input').value;
+            weatherLoad(cityName);
+        });
+        function weatherLoad(cityName){
+            //calling api with api key and city name. It needs to be taken as input and passed in the function
+            fetch('https://api.openweathermap.org/data/2.5/weather?q='+cityName+'&units=metric&APPID=8bcddb7a04f2d048d78e58a1c1cfe55c')
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                const city = data.name;
+                const temperature = data.main.temp;
+                const feelsLike = data.main.feels_like;
+                const weather = data.weather[0].main;
+                document.getElementById('cityNameShow').innerText = city;
+                document.getElementById('tempShow').innerText = temperature;
+                document.getElementById('feels-like').innerText = feelsLike;
+                document.getElementById('weatherType').innerText = weather;
+            });
+        }
+    </script>
+</body>
+
+</html>
